@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Mazen Malas COMP 272 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,11 +64,17 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
+      // Make a max heap to always get the largest boulders first
+      java.util.PriorityQueue<Integer> pq = new java.util.PriorityQueue<>(Collections.reverseOrder());
+      for (int stone : boulders) pq.add(stone); // add all boulders to the heap
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+      while (pq.size() > 1) { // this will keep breaking the two largest boulders until one or none remain
+          int y = pq.poll(); // largest
+          int x = pq.poll(); // 2nd largest
+          if (x != y) pq.add(y - x); // add the leftover piece if they differ
+      }
+
+      return pq.isEmpty() ? 0 : pq.peek();
   }
 
 
@@ -90,12 +96,21 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
-
+        // Count how many times each string appears
+        Map<String, Integer> freq = new HashMap<>();
+        for (String s : input) {
+            freq.put(s, freq.getOrDefault(s, 0) + 1);
+        }
+        // Collect all strings that appear more than once
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : freq.keySet()) {
+            if (freq.get(s) > 1) {
+                result.add(s);
+            }
+        }
+        // Sort the duplicates alphabetically and return
+        Collections.sort(result);
+        return result;
     }
 
 
@@ -130,10 +145,22 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+        // This will use sets to track seen numbers and unique pairs
+        Set<String> pairs = new HashSet<>();
+        Set<Integer> seen = new HashSet<>();
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        for (int num : input) { // Look for pairs that add up to k
+            int complement = k - num;
+            if (seen.contains(complement)) {
+                int a = Math.min(num, complement);
+                int b = Math.max(num, complement);
+                pairs.add("(" + a + ", " + b + ")"); // store the pair
+            }
+            seen.add(num); // marks number as seen
+        }
+        // Turn  set into a sorted list and return it
+        ArrayList<String> result = new ArrayList<>(pairs);
+        Collections.sort(result);
+        return result;
     }
 }

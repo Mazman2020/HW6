@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Mazen Malas COMP 272 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,9 +150,10 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
-
-        // YOUR CODE GOES HERE
-        return null;
+        Node newNode = new Node(e, priority, tree.size()); // // Make a new node with the given value and priority
+        tree.add(newNode); // Add it to the end of the heap
+        pullUp(tree.size() - 1); // move up to keep the heap in order
+        return newNode;
     }
 
 
@@ -167,9 +168,13 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
+        for (Node node : tree) { // Go through each node in the heap
+            if (node.value.equals(e)) { // If a node has the same value then return true
+                return true;
+            }
+        }
+        return false;   // No match found
 
-        // ADD YOUR CODE HERE
-        return false;
     }
 
 
